@@ -25,4 +25,8 @@ function onConnected(socket){
         socketConnected.delete(socket.id)
         io.emit('clients-total',socketConnected.size)
     })
+
+    socket.on('message',(data)=>{
+        socket.broadcast.emit('chat-message',data)
+    })
 }
