@@ -27,6 +27,6 @@ function onConnected(socket){
     })
 
     socket.on('message',(data)=>{
-        socket.broadcast.emit('chat-message',data)
+        socket.broadcast.emit('chat-message',data);
     })
 }

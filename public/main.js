@@ -1,5 +1,4 @@
 const socket = io();
-
 const clientsTotal = document.getElementById('clients-total');
 
 const messageContainer = document.getElementById('message-container');
@@ -18,14 +17,37 @@ socket.on('clients-total', (data) => {
 
 
 function sendMessage() {
+    if(data.message === "") return;
     const data = {
         name: nameInput.value,
         message: messageInput.value,
-        dateTime: new Date()
+        date : new Date()
     };
     socket.emit('message', data);
+    addMesagetoUI(true, data);
+    messageInput.value = "";
+
 }
 
 socket.on('chat-message', (data) => {
-    console.log(data);
+    addMesagetoUI(false, data);
 })
+
+
+function addMesagetoUI(isOwnMessage, data) {
+    const element = `
+    <li class="${isOwnMessage ? "message-right" : "message-left"}">
+        <p class="message">
+            ${data.message}
+            <span>${data.name} ❤️</span>
+        </p>
+    </li>
+    `;
+    messageContainer.innerHTML+= element;
+    scrollToBottom();
+}
+
+
+function scrollToBottom(){
+    messageContainer.scrollTo(0,messageContainer.scrollHeight)
+}
